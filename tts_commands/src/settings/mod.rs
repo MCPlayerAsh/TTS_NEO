@@ -139,6 +139,7 @@ pub async fn settings(ctx: Context<'_>) -> CommandResult {
     let guild_mode: &str = guild_mode.into();
     let to_translate = guild_row.to_translate();
     let require_voice = guild_row.require_voice();
+	let muted_only = guild_row.muted_only();
     let text_in_voice = guild_row.text_in_voice();
     let audience_ignore = guild_row.audience_ignore();
     let voice_mode = user_mode.map(Into::into).unwrap_or(none_str);
@@ -166,6 +167,7 @@ pub async fn settings(ctx: Context<'_>) -> CommandResult {
 {sep2} Ignore bot's messages: `{bot_ignore}`
 {sep2} Ignore audience messages: `{audience_ignore}`
 {sep2} Require users in voice channel: `{require_voice}`
+{sep2} Only read from self-muted users: `{muted_only}`
 {sep2} Required prefix for TTS: `{required_prefix}`
 {sep2} Read from Text in Voice channels: `{text_in_voice}`
 {sep2} Skip emojis when reading messages: `{skip_emoji}`
@@ -495,6 +497,12 @@ create_bool_command!(
     botignore,
     "bot_ignore",
     aliases("bot_ignore", "ignore_bots", "ignorebots"),
+);
+create_bool_command!(
+    "Makes the bot only read messages from users who are self-muted in a voice channel",
+    mutedonly,
+    "muted_only",
+    aliases("muted_only", "mutedonly", "only_muted"),
 );
 create_bool_command!(
     "Makes the bot require people to be in the voice channel to TTS",
@@ -1316,6 +1324,7 @@ pub fn commands() -> [Command; 5] {
                 server_mode(),
                 msg_length(),
                 botignore(),
+				mutedonly(),
                 translation(),
                 translation_lang(),
                 speaking_rate(),

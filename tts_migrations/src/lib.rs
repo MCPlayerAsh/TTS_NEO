@@ -189,6 +189,7 @@ async fn run_(config: &mut toml::Table, transaction: &mut Transaction<'_>) -> Re
             ADD COLUMN IF NOT EXISTS target_lang      varchar(5),
             ADD COLUMN IF NOT EXISTS premium_user     bigint,
             ADD COLUMN IF NOT EXISTS require_voice    bool       DEFAULT True,
+			ADD COLUMN IF NOT EXISTS muted_only		  bool       DEFAULT False,
             ADD COLUMN IF NOT EXISTS required_role    bigint,
             ADD COLUMN IF NOT EXISTS required_prefix  varchar(6),
             ADD COLUMN IF NOT EXISTS text_in_voice    bool       DEFAULT True,

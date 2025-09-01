@@ -237,6 +237,21 @@ fn run_checks(
             return Ok(None);
         }
     }
+	
+	// Muted-only check: Only process messages from self-muted users when enabled
+	if guild_row.muted_only() {
+		let voice_state = guild.voice_states.get(&message.author.id);
+		// Check if user is in a voice channel and self-muted
+		if let Some(voice_state) = voice_state {
+			if !voice_state.self_mute {
+				// User is not self-muted, skip processing
+				return Ok(None);
+			}
+		} else {
+			// User is not in a voice channel, skip processing
+			return Ok(None);
+		}
+	}
 
     let mut content = serenity::content_safe(
         &guild,
